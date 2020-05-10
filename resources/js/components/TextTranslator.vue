@@ -46,14 +46,14 @@
                             </p>
                             <form @submit="getTranslatedFile" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="chosen_language">Desired Output Language:</label>
-                                    <select class="form-control" id="chosen_language" ref="chosenLanguage" v-model="languages" required>
-                                        <option value="" selected>Select Language</option>
-                                        <option v-for="language in languages" v-bind:value="language.code" v-on:select="handleLanguageChange">{{ language.name }}</option>
+                                    <label for="chosenLanguage">Desired Output Language:</label>
+                                    <select class="form-control" id="chosenLanguage" ref="chosenLanguage" v-model="languages" required>
+                                        <option v-for="language in languages" v-bind:value="language.code">{{ language.name }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <input accept="text/plain" class="form-control-file" id="document" ref="initialFile" type="file" required v-on:change="handleFileUpload">
+                                    <label for="initialFile">Your File</label>
+                                    <input accept="text/plain" class="form-control-file" id="initialFile" ref="initialFile" type="file" required v-on:change="handleFileUpload">
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-block btn-primary text-white">Upload File</button>
@@ -69,7 +69,6 @@
 
 <script>
     export default {
-        el: '#app',
         name: "TextTranslator",
         data() {
             return {
@@ -93,33 +92,33 @@
 
                 textTranslator.loading = true;
                 formData.append('initialFile', this.initialFile);
-                formData.append('chosenLanguage', this.chosenLanguage);
+                formData.append('chosenLanguage', this.languages);
 
                 axios.post('/api/translations', formData, {
                     'headers': {
                         'Content-type': 'multipart/form-data'
                     }
                 })
-                .then(function (rsp) {
-                    console.log(rsp);
+                    .then(function (rsp) {
+                        console.log(rsp);
 
-                    textTranslator.failed = true;
-                    textTranslator.failureMessage = rsp.data.msg;
+                        textTranslator.failed = true;
+                        textTranslator.failureMessage = rsp.data.msg;
 
-                    if (rsp.data.rslt === 'success') {
-                        textTranslator.failed = false;
-                        textTranslator.failureMessage = '';
-                        textTranslator.submitted = true;
+                        if (rsp.data.rslt === 'success') {
+                            textTranslator.failed = false;
+                            textTranslator.failureMessage = '';
+                            textTranslator.submitted = true;
 
-                        textTranslator.desiredLanguage = rsp.data.desiredLanguage;
-                        textTranslator.sourceLanguage = rsp.data.sourceLanguage;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    textTranslator.failed = true;
-                    textTranslator.failureMessage = error;
-                })
+                            textTranslator.desiredLanguage = rsp.data.desiredLanguage;
+                            textTranslator.sourceLanguage = rsp.data.sourceLanguage;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        textTranslator.failed = true;
+                        textTranslator.failureMessage = error;
+                    })
 
                 textTranslator.loading = false;
                 textTranslator.loadLanguages();
@@ -127,10 +126,6 @@
 
             handleFileUpload() {
                 this.initialFile = this.$refs.initialFile.files[0];
-            },
-
-            handleLanguageChange() {
-                this.chosenLanguage = this.$refs.chosenLanguage.valueOf();
             },
 
             loadLanguages() {

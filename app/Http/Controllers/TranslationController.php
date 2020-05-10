@@ -35,7 +35,8 @@ class TranslationController extends Controller
     public function __construct()
     {
         $this->translate = new TranslateClient([
-            'key' => getenv('GOOGLE_CLOUD_API_KEY'),
+            'key'     => getenv('GOOGLE_CLOUD_API_KEY'),
+            'keyFile' => getenv('GOOGLE_APPLICATION_CREDENTIALS'),
         ]);
 
         $this->languages = $this->translate->localizedLanguages();

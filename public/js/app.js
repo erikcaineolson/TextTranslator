@@ -1978,7 +1978,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  el: '#app',
   name: "TextTranslator",
   data: function data() {
     return {
@@ -2000,7 +1999,7 @@ __webpack_require__.r(__webpack_exports__);
           formData = new FormData();
       textTranslator.loading = true;
       formData.append('initialFile', this.initialFile);
-      formData.append('chosenLanguage', this.chosenLanguage);
+      formData.append('chosenLanguage', this.languages);
       axios.post('/api/translations', formData, {
         'headers': {
           'Content-type': 'multipart/form-data'
@@ -2027,9 +2026,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleFileUpload: function handleFileUpload() {
       this.initialFile = this.$refs.initialFile.files[0];
-    },
-    handleLanguageChange: function handleLanguageChange() {
-      this.chosenLanguage = this.$refs.chosenLanguage.valueOf();
     },
     loadLanguages: function loadLanguages() {
       var _this = this;
@@ -37779,7 +37775,7 @@ var render = function() {
                     },
                     [
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "chosen_language" } }, [
+                        _c("label", { attrs: { for: "chosenLanguage" } }, [
                           _vm._v("Desired Output Language:")
                         ]),
                         _vm._v(" "),
@@ -37796,7 +37792,7 @@ var render = function() {
                             ],
                             ref: "chosenLanguage",
                             staticClass: "form-control",
-                            attrs: { id: "chosen_language", required: "" },
+                            attrs: { id: "chosenLanguage", required: "" },
                             on: {
                               change: function($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -37813,35 +37809,28 @@ var render = function() {
                               }
                             }
                           },
-                          [
-                            _c(
+                          _vm._l(_vm.languages, function(language) {
+                            return _c(
                               "option",
-                              { attrs: { value: "", selected: "" } },
-                              [_vm._v("Select Language")]
-                            ),
-                            _vm._v(" "),
-                            _vm._l(_vm.languages, function(language) {
-                              return _c(
-                                "option",
-                                {
-                                  domProps: { value: language.code },
-                                  on: { select: _vm.handleLanguageChange }
-                                },
-                                [_vm._v(_vm._s(language.name))]
-                              )
-                            })
-                          ],
-                          2
+                              { domProps: { value: language.code } },
+                              [_vm._v(_vm._s(language.name))]
+                            )
+                          }),
+                          0
                         )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "initialFile" } }, [
+                          _vm._v("Your File")
+                        ]),
+                        _vm._v(" "),
                         _c("input", {
                           ref: "initialFile",
                           staticClass: "form-control-file",
                           attrs: {
                             accept: "text/plain",
-                            id: "document",
+                            id: "initialFile",
                             type: "file",
                             required: ""
                           },
