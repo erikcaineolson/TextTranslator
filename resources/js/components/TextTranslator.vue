@@ -16,16 +16,23 @@
                         </div>
 
                         <div class="card-body bg-light">
-                            <p v-if="failed">{{ failureMessage }}</p>
-                            <p>
-                                When you uploaded your file, we made a call to Google's Cloud Translation service. The service determined the source language of the file as
-                                {{ sourceLanguage }}, and translated your document into {{ desiredLanguage }}. Please remember, your file will only be available while this
-                                page is in your browser, and for a maximum of 24 hours. If you close the browser, or wait more than 24 hours, you will need to recreate your
-                                translated file.
-                            </p>
-                            <p>
-                                <a href=""><i class="fas fa-file-download"></i> Download Your {{ sourceLanguage }} File in {{ desiredLanguage }}!</a>
-                            </p>
+                            <section v-if="failed">
+                                <p>{{ failureMessage }}</p>
+                                <p>
+                                    <button class="btn btn-block btn-success" v-on:click="tryAgain">Try Again</button>
+                                </p>
+                            </section>
+                            <section v-else>
+                                <p>
+                                    When you uploaded your file, we made a call to Google's Cloud Translation service. The service determined the source language of the file as
+                                    {{ sourceLanguage }}, and translated your document into {{ desiredLanguage }}. Please remember, your file will only be available while this
+                                    page is in your browser, and for a maximum of 24 hours. If you close the browser, or wait more than 24 hours, you will need to recreate your
+                                    translated file.
+                                </p>
+                                <p>
+                                    <a href=""><i class="fas fa-file-download"></i> Download Your {{ sourceLanguage }} File in {{ desiredLanguage }}!</a>
+                                </p>
+                            </section>
                         </div>
                     </div>
                 </section>
@@ -101,27 +108,29 @@
                 })
                     .then(function (rsp) {
                         console.log(rsp);
-
-                        textTranslator.failed = true;
-                        textTranslator.failureMessage = rsp.data.msg;
-
-                        if (rsp.data.rslt === 'success') {
-                            textTranslator.failed = false;
-                            textTranslator.failureMessage = '';
-                            textTranslator.submitted = true;
-
-                            textTranslator.desiredLanguage = rsp.data.desiredLanguage;
-                            textTranslator.sourceLanguage = rsp.data.sourceLanguage;
-                        }
+                        //
+                        // textTranslator.failed = true;
+                        // textTranslator.failureMessage = rsp.data.msg;
+                        //
+                        // if (rsp.data.rslt === 'success') {
+                        //     textTranslator.failed = false;
+                        //     textTranslator.failureMessage = '';
+                        //     textTranslator.submitted = true;
+                        //
+                        //     textTranslator.desiredLanguage = rsp.data.desiredLanguage;
+                        //     textTranslator.sourceLanguage = rsp.data.sourceLanguage;
+                        // }
                     })
                     .catch(function (error) {
                         console.log(error);
                         textTranslator.failed = true;
                         textTranslator.failureMessage = error;
+                        textTranslator.submitted = true;
                     })
-
-                textTranslator.loading = false;
-                textTranslator.loadLanguages();
+                    .finally(function () {
+                        textTranslator.loading = false;
+                        textTranslator.loadLanguages();
+                    });
             },
 
             handleFileUpload() {
@@ -136,6 +145,12 @@
                         this.failed = true;
                     })
                     .finally(() => this.loading = false);
+            },
+
+            tryAgain() {
+                this.loadLanguages();
+                this.failed = false;
+                this.submitted = false;
             }
         },
         mounted() {
