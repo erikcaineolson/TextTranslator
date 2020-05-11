@@ -8,9 +8,8 @@
 
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.1/css/all.css">
+{{--        <!-- Fonts -->--}}
+{{--        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">--}}
 
         <!-- Favicon -->
         <link rel="icon" href="/favicon.png" sizes="any" type="image/png">
@@ -78,6 +77,5 @@
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
-        <script defer src="https://use.fontawesome.com/releases/v5.11.1/js/all.js"></script>
     </body>
 </html>

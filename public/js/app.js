@@ -1984,6 +1984,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TextTranslator",
   data: function data() {
@@ -1996,7 +1997,7 @@ __webpack_require__.r(__webpack_exports__);
       loading: true,
       sourceLanguage: '',
       submitted: false,
-      url: ''
+      translatedText: ''
     };
   },
   methods: {
@@ -2012,18 +2013,17 @@ __webpack_require__.r(__webpack_exports__);
           'Content-type': 'multipart/form-data'
         }
       }).then(function (rsp) {
-        console.log(rsp); //
-        // textTranslator.failed = true;
-        // textTranslator.failureMessage = rsp.data.msg;
-        //
-        // if (rsp.data.rslt === 'success') {
-        //     textTranslator.failed = false;
-        //     textTranslator.failureMessage = '';
-        //     textTranslator.submitted = true;
-        //
-        //     textTranslator.desiredLanguage = rsp.data.desiredLanguage;
-        //     textTranslator.sourceLanguage = rsp.data.sourceLanguage;
-        // }
+        textTranslator.failed = true;
+        textTranslator.failureMessage = rsp.data.msg;
+
+        if (rsp.data.rslt === 'success') {
+          textTranslator.failed = false;
+          textTranslator.failureMessage = '';
+          textTranslator.submitted = true;
+          textTranslator.desiredLanguage = rsp.data.desiredLanguage;
+          textTranslator.sourceLanguage = rsp.data.sourceLanguage;
+          textTranslator.translatedText = rsp.data.msg;
+        }
       })["catch"](function (error) {
         console.log(error);
         textTranslator.failed = true;
@@ -37734,7 +37734,7 @@ var render = function() {
                       { staticClass: "card-header bg-success text-white" },
                       [
                         _c("h1", { staticClass: "card-title" }, [
-                          _vm._v("Ready to Download…")
+                          _vm._v("Your Translation")
                         ])
                       ]
                     ),
@@ -37762,21 +37762,42 @@ var render = function() {
                               _vm._s(_vm.sourceLanguage) +
                               ", and translated your document into " +
                               _vm._s(_vm.desiredLanguage) +
-                              ". Please remember, your file will only be available while this\n                                page is in your browser, and for a maximum of 24 hours. If you close the browser, or wait more than 24 hours, you will need to recreate your\n                                translated file.\n                            "
+                              ".\n                            "
                           )
                         ]),
                         _vm._v(" "),
                         _c("p", [
-                          _c("a", { attrs: { href: "" } }, [
-                            _c("i", { staticClass: "fas fa-file-download" }),
-                            _vm._v(
-                              " Download Your " +
-                                _vm._s(_vm.sourceLanguage) +
-                                " File in " +
-                                _vm._s(_vm.desiredLanguage) +
-                                "!"
-                            )
-                          ])
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.translatedText,
+                                expression: "translatedText"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            domProps: { value: _vm.translatedText },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.translatedText = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-block btn-success",
+                              on: { click: _vm.tryAgain }
+                            },
+                            [_vm._v("Do it Again")]
+                          )
                         ])
                       ])
                 ])

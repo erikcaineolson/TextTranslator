@@ -12,7 +12,7 @@
                             <h1 class="card-title">Oops!</h1>
                         </div>
                         <div class="card-header bg-success text-white" v-else>
-                            <h1 class="card-title">Ready to Download&hellip;</h1>
+                            <h1 class="card-title">Your Translation</h1>
                         </div>
 
                         <div class="card-body bg-light">
@@ -25,12 +25,13 @@
                             <section v-else>
                                 <p>
                                     When you uploaded your file, we made a call to Google's Cloud Translation service. The service determined the source language of the file as
-                                    {{ sourceLanguage }}, and translated your document into {{ desiredLanguage }}. Please remember, your file will only be available while this
-                                    page is in your browser, and for a maximum of 24 hours. If you close the browser, or wait more than 24 hours, you will need to recreate your
-                                    translated file.
+                                    {{ sourceLanguage }}, and translated your document into {{ desiredLanguage }}.
                                 </p>
                                 <p>
-                                    <a href=""><i class="fas fa-file-download"></i> Download Your {{ sourceLanguage }} File in {{ desiredLanguage }}!</a>
+                                    <textarea class="form-control" v-model="translatedText"></textarea>
+                                </p>
+                                <p>
+                                    <button class="btn btn-block btn-success" v-on:click="tryAgain">Do it Again</button>
                                 </p>
                             </section>
                         </div>
@@ -87,7 +88,7 @@
                 loading: true,
                 sourceLanguage: '',
                 submitted: false,
-                url: ''
+                translatedText: ''
             }
         },
         methods: {
@@ -107,19 +108,18 @@
                     }
                 })
                     .then(function (rsp) {
-                        console.log(rsp);
-                        //
-                        // textTranslator.failed = true;
-                        // textTranslator.failureMessage = rsp.data.msg;
-                        //
-                        // if (rsp.data.rslt === 'success') {
-                        //     textTranslator.failed = false;
-                        //     textTranslator.failureMessage = '';
-                        //     textTranslator.submitted = true;
-                        //
-                        //     textTranslator.desiredLanguage = rsp.data.desiredLanguage;
-                        //     textTranslator.sourceLanguage = rsp.data.sourceLanguage;
-                        // }
+                        textTranslator.failed = true;
+                        textTranslator.failureMessage = rsp.data.msg;
+
+                        if (rsp.data.rslt === 'success') {
+                            textTranslator.failed = false;
+                            textTranslator.failureMessage = '';
+                            textTranslator.submitted = true;
+
+                            textTranslator.desiredLanguage = rsp.data.desiredLanguage;
+                            textTranslator.sourceLanguage = rsp.data.sourceLanguage;
+                            textTranslator.translatedText = rsp.data.msg;
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);

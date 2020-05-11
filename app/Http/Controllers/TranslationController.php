@@ -73,14 +73,12 @@ class TranslationController extends Controller
             $requestedFile = $request->file('initialFile');
 
             $extension = $requestedFile->getClientOriginalExtension();
-            $filename = Str::random() . '.txt';
             $mime = $requestedFile->getMimeType();
-            $path = Str::random() . '/';
 
             // if the file is not a text file, we can't process it; kick it back with an error (422 again, for the same reasons as above)
             if(!in_array($extension, self::ALLOWED_EXTENSIONS) && !in_array($mime, self::ALLOWED_MIME_TYPES)) {
                 $response['msg'] = 'Unfortunately, the file you submitted was not a plain text file, and could not be processed.';
-                return response()->json($response, 418);
+                return response()->json($response, $responseCode);
             }
 
             $initialText = file_get_contents($requestedFile->path());
@@ -90,13 +88,11 @@ class TranslationController extends Controller
             ]);
 
             // store the file to a temporary S3 bucket
-            $storedFile = Storage::disk('s3')->put($path . $filename, $translated['text']);
             $response = [
                 'rslt'            => 'success',
-                'msg'             => 'Translation was a success',
-                'sourceLanguage'  => $this->languages[$translated['source']],
-                'desiredLanguage' => $desiredLanguage,
-                'url'             => $storedFile,
+                'msg'             => $translated['text'],
+                'sourceLanguage'  => strtoupper($translated['source']),
+                'desiredLanguage' => strtoupper($desiredLanguage),
             ];
             $responseCode = 200;
         } catch (TypeError $e) {
