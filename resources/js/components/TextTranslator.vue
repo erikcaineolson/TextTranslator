@@ -27,8 +27,8 @@
                                     When you uploaded your file, we made a call to Google's Cloud Translation service. The service determined the source language of the file as
                                     {{ sourceLanguage }}, and translated your document into {{ desiredLanguage }}.
                                 </p>
-                                <p>
-                                    <textarea class="form-control" v-model="translatedText"></textarea>
+                                <p class="text-white bg-dark">
+                                    {{ translatedText }}
                                 </p>
                                 <p>
                                     <button class="btn btn-block btn-success" v-on:click="tryAgain">Do it Again</button>

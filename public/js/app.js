@@ -37766,27 +37766,12 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("p", [
-                          _c("textarea", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.translatedText,
-                                expression: "translatedText"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            domProps: { value: _vm.translatedText },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.translatedText = $event.target.value
-                              }
-                            }
-                          })
+                        _c("p", { staticClass: "text-white bg-dark" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.translatedText) +
+                              "\n                            "
+                          )
                         ]),
                         _vm._v(" "),
                         _c("p", [
