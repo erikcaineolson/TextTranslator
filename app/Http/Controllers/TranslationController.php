@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Google\Cloud\Translate\V2\TranslateClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use TypeError;
 
 class TranslationController extends Controller
@@ -52,6 +50,11 @@ class TranslationController extends Controller
         return response()->json($this->languages, 200);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function translate(Request $request): JsonResponse
     {
         $response = [
@@ -96,7 +99,7 @@ class TranslationController extends Controller
             ];
             $responseCode = 200;
         } catch (TypeError $e) {
-            $response['msg'] = $e->getMessage();
+            $response['msg'] = 'Something went awry; please try again.';
             $responseCode = 500;
         }
 
