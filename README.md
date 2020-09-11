@@ -32,7 +32,7 @@ Upload a file and translate it into the language of your choice (from any availa
 1. Text that is too long (Google places character limits per 100 seconds)
 
 ### How it Works
-1. The user lands on the page (currently available online at https://urzul.com)
+1. The user lands on the page
     1. Vue populates the select box with the most recent list of available languages
         1. Vue makes an HTTP GET API call via Axios to the Laravel API `/api/translations`
         1. The Translation Controller calls the Translation API (`available languages` endpoint) using the Google Cloud Services PHP SDK
