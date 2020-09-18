@@ -25,7 +25,8 @@
                             <section v-else>
                                 <p>
                                     When you uploaded your file, we made a call to Google's Cloud Translation service. The service determined the source language of the file as
-                                    {{ sourceLanguage }}, and translated your document into {{ desiredLanguage }}.
+                                    {{ sourceLanguage }}, and translated your document into {{ desiredLanguage }}. If you're interested, you can
+                                    <a href="{{ route('stats.index') }}">view usage here</a>.
                                 </p>
                                 <p class="text-white bg-dark">
                                     {{ translatedText }}
@@ -48,6 +49,7 @@
                             <p>
                                 Select a language and upload a file below to translate your file into the desired language.
                                 Downloads will only be available as long as you keep this page open, for up to 24 hours, for your protection.
+                                If you're interested, you can <a href="{{ route('stats.index') }}">view usage here</a>.
                             </p>
                             <p>
                                 <strong><em>Note: these files ARE NOT encrypted. DO NOT submit sensitive data, like banking or other personal information, to this app.</em></strong>

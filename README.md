@@ -8,9 +8,10 @@ Upload a file and translate it into the language of your choice (from any availa
 1. Composer
 1. npm 
 1. Google Cloud Services API Key and JSON Credentials, with the Translation Service enabled
+1. MySQL, MariaDB, or Postgres
 
 ### Assumptions 
-1. You are familiar with setting up and hosting Laravel applications, including Composer and npm
+1. You are familiar with setting up and hosting Laravel applications, including Artisan, Composer, and npm
 1. You are familiar with Google Cloud Services IAM 
 1. Google Cloud Translation Service is live and accessible
 1. Google Cloud Translation Service can determine the source language of the document
@@ -22,7 +23,8 @@ Upload a file and translate it into the language of your choice (from any availa
 1. Retrieve a Google Cloud Service API Key and JSON Credentials for the Google Cloud Services Translation API
 1. Add the API Key to the `GOOGLE_CLOUD_API_KEY` parameter in `.env`
 1. Add the location of the Credentials JSON to the `GOOGLE_APPLICATION_CREDENTIALS` parameter in `.env`
-1. You're ready to go...we're not using a database
+1. Create a database and add the credentials to the `DB_*` parameters in `.env`
+1. Run the migrations
 
 ### Possible Edge Cases
 1. A binary file submitted as a .txt with a forged MIME-type
@@ -30,6 +32,7 @@ Upload a file and translate it into the language of your choice (from any availa
 1. The user's system does not support the "translated-to" language
 1. Text that is too short (so Google can't determine the source language)
 1. Text that is too long (Google places character limits per 100 seconds)
+1. Too many requests for the API (Google places limits)
 
 ### How it Works
 1. The user lands on the page
@@ -45,13 +48,15 @@ Upload a file and translate it into the language of your choice (from any availa
     1. Vue makes an HTTP POST API call via Axios to the API `/api/translations` (`translate()` method on the Translation Controller)
     1. `translate()` pulls the content out of the out of the text file and sends the text and desired language to Google Cloud Translation services (`translate` endoint)
     1. Google Cloud Services Translation API translates the text and returns the translated text as JSON
+    1. `translate()` creates an instance of an Audit object and persists it to the database
     1. `translate()` returns either a `200` and the text for display, or a `422` or `500` along with the related error message
 1. If there was an error somewhere, Vue displays an error screen with the option to try again
 1. If everything processes correctly, Vue displays the edited text, along with the associated information describing what happened to the file 
 1. Any server error, hangup, etc. is represented as a 500 to the end-user
+1. As long as the user can see the page, they may access the "stats" page (currently just a Blade file)
 
 ### Potential Improvements
-1. Cache language list to decrease load time and make fewer (billed) API calls to Google Cloud Services
+1. ~~Cache language list to decrease load time and make fewer (billed) API calls to Google Cloud Services~~
 1. Authentication requirements to avoid DDOS and decrease the risk of Google Cloud Services API abuse
 1. Better logging throughout
 1. Don't handle any "otherwise indeterminate error" as a blanket 500

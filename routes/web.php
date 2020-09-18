@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'DefaultController@index')->name('home');
+Route::resource('stats', 'AuditController')->only(['index',]);
