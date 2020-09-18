@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Audit;
+use App\Language;
 use Google\Cloud\Translate\V2\TranslateClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class TranslationController extends Controller
             'keyFile' => getenv('GOOGLE_APPLICATION_CREDENTIALS'),
         ]);
 
-        $this->languages = $this->translate->localizedLanguages();
+        $this->languages = Language::all()->toJson();
     }
 
     /**
