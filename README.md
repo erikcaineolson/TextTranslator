@@ -1,6 +1,6 @@
 # Text Translator
 
-Upload a file and translate it into the language of your choice (from any available language via the Google Cloud Translation API).
+Upload a file and translate it into the language of your choice (from any available language via the Google Cloud Translation API). Online at https://urzul.com
 
 ### Requirements
 1. PHP 7+
@@ -35,7 +35,7 @@ Upload a file and translate it into the language of your choice (from any availa
 1. Too many requests for the API (Google places limits)
 
 ### How it Works
-1. The user lands on the page (currently available online at https://urzul.com)
+1. The user lands on the page
     1. Vue populates the select box with the most recent list of available languages
         1. Vue makes an HTTP GET API call via Axios to the Laravel API `/api/translations`
         1. The Translation Controller calls the Translation API (`available languages` endpoint) using the Google Cloud Services PHP SDK
