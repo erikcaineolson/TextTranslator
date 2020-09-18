@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // fix the MySQL/MariaDB SQLSTATE 42000 Syntax Error (Specified key was too long)
+        Schema::defaultStringLength(191);
     }
 }
