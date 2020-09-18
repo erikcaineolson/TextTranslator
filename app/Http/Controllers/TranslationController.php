@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Audit;
 use Google\Cloud\Translate\V2\TranslateClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Jenssegers\Agent\Facades\Agent;
 use TypeError;
 
 class TranslationController extends Controller
@@ -79,8 +82,8 @@ class TranslationController extends Controller
             $mime = $requestedFile->getMimeType();
 
             // if the file is not a text file, we can't process it; kick it back with an error (422 again, for the same reasons as above)
-            if(!in_array($extension, self::ALLOWED_EXTENSIONS) && !in_array($mime, self::ALLOWED_MIME_TYPES)) {
-                $response['msg'] = 'Unfortunately, the file you submitted was not a plain text file, and could not be processed.';
+            if (!in_array($extension, self::ALLOWED_EXTENSIONS) && !in_array($mime, self::ALLOWED_MIME_TYPES)) {
+                $response['msg'] = 'Unfortunately, the file you submitted was not in an acceptable format, and could not be processed.';
                 return response()->json($response, $responseCode);
             }
 
@@ -98,6 +101,22 @@ class TranslationController extends Controller
                 'desiredLanguage' => strtoupper($desiredLanguage),
             ];
             $responseCode = 200;
+
+            $agent = new Agent();
+
+            Audit::create([
+                'mime_type'            => $mime,
+                'file_size'            => $requestedFile->getFileInfo()->getSize(),
+                'source_language'      => strtoupper($translated['source']),
+                'destination_language' => strtoupper($desiredLanguage),
+                'bot'                  => $agent->isRobot() ? $agent->robot() : '',
+                'browser'              => $agent->browser(),
+                'device'               => $agent->isDesktop() ? 'Desktop' : $agent->device(),
+                'ip'                   => $request->ip(),
+                'os'                   => $agent->platform(),
+                'user_agent'           => $request->userAgent(),
+            ]);
+
         } catch (TypeError $e) {
             $response['msg'] = 'Something went awry; please try again.';
             $responseCode = 500;
