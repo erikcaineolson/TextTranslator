@@ -4,23 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Audit;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AuditController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        //
+        return response()->view('audits.index', ['audits' => Audit::all(),]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -30,8 +31,8 @@ class AuditController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -42,7 +43,7 @@ class AuditController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Audit $audit)
     {
@@ -53,7 +54,7 @@ class AuditController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Audit $audit)
     {
@@ -63,9 +64,9 @@ class AuditController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, Audit $audit)
     {
@@ -76,7 +77,7 @@ class AuditController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Audit $audit)
     {

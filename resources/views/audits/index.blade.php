@@ -10,6 +10,7 @@
         <tr>
             <th>Translated From</th>
             <th>Translated To</th>
+            <th>Bot</th>
             <th>OS</th>
             <th>Browser</th>
             <th>Device</th>
@@ -22,6 +23,7 @@
             <tr>
                 <td>{{ $audit->source_language ?? '—' }}</td>
                 <td>{{ $audit->destination_language ?? '—' }}</td>
+                <td>{{ $audit->bot ? 'Yes' : 'No' }}</td>
                 <td>{{ $audit->os ?? '—' }}</td>
                 <td>{{ $audit->browser ?? '—' }}</td>
                 <td>{{ $audit->device ?? '—' }}</td>
