@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <table id="auditTable">
+    <table id="auditTable" class="table table-active table-bordered">
         <thead>
         <tr>
             <th>Translated From</th>
