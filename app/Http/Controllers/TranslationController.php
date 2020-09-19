@@ -41,7 +41,7 @@ class TranslationController extends Controller
             'keyFile' => getenv('GOOGLE_APPLICATION_CREDENTIALS'),
         ]);
 
-        $this->languages = Language::all()->toJson();
+        $this->languages = Language::all();
     }
 
     /**
