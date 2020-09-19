@@ -7,7 +7,6 @@ use App\Language;
 use Google\Cloud\Translate\V2\TranslateClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Jenssegers\Agent\Facades\Agent;
 use TypeError;
 
@@ -103,18 +102,16 @@ class TranslationController extends Controller
             ];
             $responseCode = 200;
 
-            $agent = new Agent();
-
             Audit::create([
                 'mime_type'            => $mime,
                 'file_size'            => $requestedFile->getFileInfo()->getSize(),
                 'source_language'      => strtoupper($translated['source']),
                 'destination_language' => strtoupper($desiredLanguage),
-                'bot'                  => $agent->isRobot() ? $agent->robot() : '',
-                'browser'              => $agent->browser(),
-                'device'               => $agent->isDesktop() ? 'Desktop' : $agent->device(),
+                'bot'                  => Agent::isRobot() ? Agent::robot() : '',
+                'browser'              => Agent::browser(),
+                'device'               => Agent::isDesktop() ? 'Desktop' : Agent::device(),
                 'ip'                   => $request->ip(),
-                'os'                   => $agent->platform(),
+                'os'                   => Agent::platform(),
                 'user_agent'           => $request->userAgent(),
             ]);
 
