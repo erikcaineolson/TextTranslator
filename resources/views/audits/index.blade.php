@@ -34,7 +34,7 @@
                             <td>{{ $audit->os ?? '—' }}</td>
                             <td>{{ $audit->browser ?? '—' }}</td>
                             <td>{{ $audit->device ?? '—' }}</td>
-                            <td>{{ $audit->file_size ?? '—' }}</td>
+                            <td>{{ $audit->file_size ? $audit->file_size .'B' : '—' }}</td>
                         </tr>
                     @endforeach
                     </tbody>
