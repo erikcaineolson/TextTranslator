@@ -51,9 +51,9 @@ Upload a file and translate it into the language of your choice (from any availa
     1. `translate()` creates an instance of an Audit object and persists it to the database
     1. `translate()` returns either a `200` and the text for display, or a `422` or `500` along with the related error message
 1. If there was an error somewhere, Vue displays an error screen with the option to try again
-1. If everything processes correctly, Vue displays the edited text, along with the associated information describing what happened to the file 
+1. If everything processes correctly, Vue displays the translated text, along with the associated information describing what happened to the file 
 1. Any server error, hangup, etc. is represented as a 500 to the end-user
-1. As long as the user can see the page, they may access the "stats" page (currently just a Blade file)
+1. As long as the user can see the page, they may access the "stats" page (currently a simple Blade file displaying Audit data in a DataTables-formatted table)
 
 ### Potential Improvements
 1. ~~Cache language list to decrease load time and make fewer (billed) API calls to Google Cloud Services~~
