@@ -58,7 +58,7 @@
                                 <div class="form-group">
                                     <label for="chosenLanguage">Desired Output Language:</label>
                                     <select class="form-control" id="chosenLanguage" ref="chosenLanguage" v-model="languages" required>
-                                        <option v-for="language in languages" v-bind:value="language.code">{{ language.name }}</option>
+                                        <option v-for="language in languages" v-bind:value="language.code">{{ language.moniker }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
